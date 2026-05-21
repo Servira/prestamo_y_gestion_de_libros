@@ -1,0 +1,15 @@
+### materias ###
+id,nombre,departamento
+
+### cursos ###
+curso,nivel
+
+### libros ###
+isbn,titulo,autor,numero_ejemplares,id_materia,id_curso
+
+### alumnos ###
+nie,nombre,apellidos,tramo,bilingue
+
+### alumnoscursoslibros ###
+nie,curso,isbn,fecha_entrega,fecha_devolucion,estado
+
