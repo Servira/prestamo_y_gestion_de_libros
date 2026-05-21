@@ -26,7 +26,8 @@ def main():
                 from alumnos import menu_alumnos
                 menu_alumnos()
             elif opcion == 3:
-                print("\n[Gestión de préstamos - próximamente]")
+                from prestamos import menu_prestamos
+                menu_prestamos()
             elif opcion == 4:
                 print("\n[Listados - próximamente]")
             elif opcion == 5:
