@@ -32,7 +32,8 @@ def main():
                 from listados import menu_listados
                 menu_listados()
             elif opcion == 5:
-                print("\n[Copia de seguridad - próximamente]")
+                from backup import menu_backup
+                menu_backup()
             elif opcion == 0:
                 print("\nAdiós!")
                 break
