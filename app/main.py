@@ -23,7 +23,8 @@ def main():
                 from carga_datos import menu_carga_datos
                 menu_carga_datos()
             elif opcion == 2:
-                print("\n[Gestión de alumnos - próximamente]")
+                from alumnos import menu_alumnos
+                menu_alumnos()
             elif opcion == 3:
                 print("\n[Gestión de préstamos - próximamente]")
             elif opcion == 4:
