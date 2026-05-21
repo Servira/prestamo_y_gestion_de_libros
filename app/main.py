@@ -20,7 +20,8 @@ def main():
         try:
             opcion = int(input("Elige una opción: "))
             if opcion == 1:
-                print("\n[Carga de datos - próximamente]")
+                from carga_datos import menu_carga_datos
+                menu_carga_datos()
             elif opcion == 2:
                 print("\n[Gestión de alumnos - próximamente]")
             elif opcion == 3:
