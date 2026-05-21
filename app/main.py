@@ -29,7 +29,8 @@ def main():
                 from prestamos import menu_prestamos
                 menu_prestamos()
             elif opcion == 4:
-                print("\n[Listados - próximamente]")
+                from listados import menu_listados
+                menu_listados()
             elif opcion == 5:
                 print("\n[Copia de seguridad - próximamente]")
             elif opcion == 0:
