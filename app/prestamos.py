@@ -12,6 +12,7 @@ def mostrar_menu():
     print("2. Registrar devolución de libros")
     print("3. Cerrar préstamo")
     print("4. Ver préstamos de un alumno")
+    print("5. Generar contrato de préstamo")
     print("0. Volver al menú principal")
     print("------------------------------------------------")
 
@@ -146,6 +147,61 @@ def ver_prestamos():
         finally:
             cerrar(conexion, cursor)
 
+def generar_contrato():
+    nie = input("\nIntroduce el NIE del alumno: ")
+    conexion = conectar()
+    if conexion:
+        cursor = conexion.cursor()
+        try:
+            cursor.execute("SELECT nombre, apellidos FROM alumnos WHERE nie = %s", (nie,))
+            alumno = cursor.fetchone()
+            if not alumno:
+                print("\nAlumno no encontrado.")
+                return
+
+            cursor.execute(
+                "SELECT l.titulo, l.autor, a.isbn, a.fecha_entrega FROM alumnoscursoslibros a JOIN libros l ON a.isbn = l.isbn WHERE a.nie = %s AND a.estado = 'P'",
+                (nie,)
+            )
+            prestamos = cursor.fetchall()
+            if not prestamos:
+                print("\nEste alumno no tiene préstamos activos.")
+                return
+
+            nombre_fichero = f"contrato_{nie}_{date.today()}.txt"
+            with open(nombre_fichero, "w", encoding="utf-8") as f:
+                f.write("=" * 60 + "\n")
+                f.write("    CONTRATO DE PRÉSTAMO DE LIBROS\n")
+                f.write("    IES Arcipreste de Hita\n")
+                f.write("=" * 60 + "\n\n")
+                f.write(f"Fecha: {date.today()}\n\n")
+                f.write(f"Alumno: {alumno[1]}, {alumno[0]}\n")
+                f.write(f"NIE: {nie}\n\n")
+                f.write("Libros prestados:\n")
+                f.write("-" * 60 + "\n")
+                for i, p in enumerate(prestamos, 1):
+                    f.write(f"{i}. {p[0]} - {p[1]}\n")
+                    f.write(f"   ISBN: {p[2]} | Fecha entrega: {p[3]}\n")
+                f.write("-" * 60 + "\n\n")
+                f.write("El alumno/a se compromete a devolver los libros\n")
+                f.write("en buen estado al finalizar el curso escolar.\n\n")
+                f.write("Firma del alumno/tutor:\n\n")
+                f.write("_______________________________\n\n")
+                f.write("Firma del responsable del centro:\n\n")
+                f.write("_______________________________\n")
+
+            print(f"\nContrato generado: {nombre_fichero}")
+            firmado = input("¿El contrato ha sido firmado? (s/n): ")
+            if firmado.lower() == "s":
+                print("Contrato registrado como firmado.")
+            else:
+                print("Contrato pendiente de firma.")
+
+        except Exception as e:
+            print(f"\nError: {e}")
+        finally:
+            cerrar(conexion, cursor)
+
 def menu_prestamos():
     while True:
         mostrar_menu()
@@ -159,6 +215,8 @@ def menu_prestamos():
                 cerrar_prestamo()
             elif opcion == 4:
                 ver_prestamos()
+            elif opcion == 5:
+                generar_contrato()
             elif opcion == 0:
                 break
             else:
